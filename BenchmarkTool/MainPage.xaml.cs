@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using System.Runtime.InteropServices;
 
 namespace BenchmarkTool
 {
@@ -13,15 +14,25 @@ namespace BenchmarkTool
         private List<Task> _Tasks;
         private bool _StopCheck;
         private int _NumCores;
-
+        private string _ProcessorName;
+        private string _Architecture;
+        private string _MachineName;
+        private string _OsVersion;
         public MainPage()
         {
+            _ProcessorName = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+            _Architecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+            _MachineName = Environment.MachineName.ToString();
+            _OsVersion = Environment.OSVersion.ToString();
+            _NumCores = Environment.ProcessorCount;
             InitializeComponent();
             _Score = 0;
-            _NumCores = Environment.ProcessorCount;
-            CpuCoresLabel.Text = _NumCores.ToString();
-            BenchmarkScoreLabel.Text = _Score.ToString();
-
+            CPUCores.Text += _NumCores.ToString();
+            BenchmarkScore.Text += _Score.ToString();
+            ProcessorName.Text += _ProcessorName;
+            Architecture.Text += _Architecture;
+            MachineName.Text += _MachineName;
+            OSVersion.Text += _OsVersion;
         }
 
         private async void OnStartBenchmarkClicked(object sender, EventArgs e)
@@ -50,7 +61,7 @@ namespace BenchmarkTool
 
             await Task.WhenAll(_Tasks);
 
-            BenchmarkScoreLabel.Text = _Score.ToString();
+            BenchmarkScore.Text = _Score.ToString();
 
             StartBenchmarkButton.IsEnabled = true;
             ActivityIndicator.IsRunning = false;

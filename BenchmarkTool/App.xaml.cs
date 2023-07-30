@@ -1,14 +1,13 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Windows.Graphics;
-
 namespace BenchmarkTool;
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
+    public App()
+    {
+        InitializeComponent();
         Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
         {
             var mauiWindow = handler.VirtualView;
@@ -17,8 +16,8 @@ public partial class App : Application
             IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(nativeWindow);
             WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(windowHandle);
             AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
-            appWindow.Resize(new SizeInt32(500, 600));
+            appWindow.Resize(new SizeInt32(700, 500));
         });
         MainPage = new AppShell();
-	}
+    }
 }
